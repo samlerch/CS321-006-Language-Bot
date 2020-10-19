@@ -1,3 +1,4 @@
 
 language_bot.env
 *.env
+*.pyc
