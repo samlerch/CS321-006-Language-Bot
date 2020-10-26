@@ -23,11 +23,13 @@ class BinarySearchTree:
     
     # currently prints all right values of a BST
     def printBST(self):
-        self.printHelper(self.root)
+        count = 0
+        self.printHelper(self.root, count)
     
     # helper function, allows calling of printBST without the root       
-    def printHelper(self, cur):
+    def printHelper(self, cur, count):
         if(cur is None):
             return
-        print(f'{cur.word}')
-        return self.printHelper(cur.right)
+        count += 1
+        print(f'{count}. {cur.word}')
+        return self.printHelper(cur.right, count)

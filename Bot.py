@@ -13,34 +13,32 @@ GUILD=os.getenv('DISCORD_GUILD') # guild token is in env file
 # prefix used before all commands
 bot = LanguageBot(command_prefix='-')
 
-bot.printTest()    
-# connection from bot to client
+print(f'Connecting...')
+  
+# Checks if bot connected to discord
 @bot.listen()
 async def on_ready():
     print(f'{bot} has connected to {bot.guilds}')
 
-# bot command prints users 100 most recent messages
+# command for testing purposes. 
+# prints a bst with a users messages tagged by pos
 # call using -words 
-@bot.command(name='words', help='provides a users top 10 words')
+@bot.command(name='words', help='testing method')
 async def words(ctx):
     await ctx.send('grabbing message history...')
-    messages = await ctx.channel.history().flatten()
+    messages = await bot.getChatLogs(ctx)
     
-    bst = BinarySearchTree()
-    counter = 0
-    
-    # breaks apart a message into words with part of speech tags.
-    for message in messages:
-        if(ctx.author == message.author):
-            words = bot.parseMessage(message.content)
-            for word in words:
-                bst.insert(Node(word))
+    bst = bot.createBST(messages, ctx)
     bst.printBST()
     await ctx.send('done!')
-    
+
 bot.run(TOKEN)
 
 # TODO
+# caching a users bst?
+# create a user class to save there messages
+    # maybe unnecessary if we can create bst / parse message history fast enough
+# filter by pos
 # exception handling
 # multiple channels
 # images may break ?
