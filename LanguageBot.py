@@ -53,6 +53,21 @@ class LanguageBot(commands.Bot):
         
     def getConjunctions():
         pass
+    
+    def getAdposition():
+        pass
         
+    def getArticle():
+        pass
+        
+    def getNumeral():
+        pass
+    
+    def getParticle():
+        pass
+        
+    def getPronoun():
+        pass
+            
     def getOther():
         pass
