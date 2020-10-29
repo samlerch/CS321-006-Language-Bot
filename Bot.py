@@ -1,7 +1,7 @@
 import os
 import discord
 import nltk
-from BinarySearchTree import *
+from RedBlackTree import RedBlackTree
 from discord.ext import commands
 from dotenv import load_dotenv
 from LanguageBot import LanguageBot
@@ -28,8 +28,8 @@ async def words(ctx):
     await ctx.send('grabbing message history...')
     messages = await bot.getChatLogs(ctx)
     
-    bst = bot.createBST(messages, ctx)
-    bst.printBST()
+    rbt = bot.createRBT(messages, ctx)
+    rbt.printRBT()
     await ctx.send('done!')
 
 bot.run(TOKEN)

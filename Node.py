@@ -1,4 +1,4 @@
-# node class for BST
+# node class for RBT
 # holds the word itself, word count, part of speech
 import nltk
 

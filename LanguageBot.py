@@ -1,7 +1,7 @@
 # sub class of discord bot
 import nltk
 from discord.ext import commands
-from BinarySearchTree import BinarySearchTree
+from RedBlackTree import RedBlackTree
 from Node import Node
 class LanguageBot(commands.Bot):
 
@@ -21,15 +21,15 @@ class LanguageBot(commands.Bot):
         return userMessages
     
     # accepts the context of the bot and a list of user messages (strings)
-    # returns a bst with each word in the string as a node
-    def createBST(self, userMessages, ctx):
-        bst = BinarySearchTree()
+    # returns a rbt with each word in the string as a node
+    def createRBT(self, userMessages, ctx):
+        rbt = RedBlackTree()
         for message in userMessages:
             if(ctx.author == message.author):
                 parsedMessage = self.parseMessage(message.content)
                 for word in parsedMessage:
-                    bst.insert(Node(word))
-        return bst
+                    rbt.insert(Node(word))
+        return rbt
     
     # accepts a string and the context of the bot
     # returns synonyms for the string
