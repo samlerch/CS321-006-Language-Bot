@@ -1,6 +1,6 @@
 import nltk
-from Node import *
-
+from Node import Node
+import random
 class RedBlackTree:
     def __init__(self):
         self.root = None
@@ -42,14 +42,12 @@ class RedBlackTree:
             elif((cur.parent.parent.right and cur.parent.parent.right is not cur.parent) or not cur.parent.parent.right):
                 if((not cur.parent.parent.right or (cur.parent.parent.right.color == 1)) and (cur is cur.parent.right)):
                     print(f'Left-Right Rotation needed')
-                    self.leftRotate(cur)
-                    self.rightRotate(cur)                
+                    self.leftRightRotate(cur)              
             # runs if left uncle is black and cur is the left child of parent
             elif((cur.parent.parent.left and cur.parent.parent.left is not cur.parent) or not cur.parent.parent.left):
                 if((not cur.parent.parent.left or (cur.parent.parent.left.color == 1)) and cur is cur.parent.left):
                     print(f'Needs Right-Left rotation')
-                    self.rightRotate(cur)
-                    self.leftRotate(cur)
+                    self.rightLeftRotate(cur)
     # right rotation
     # grandparent is now right child of parent
     # swap colors of parent and grand parent
@@ -62,19 +60,61 @@ class RedBlackTree:
         
         # if great grandparent exists sets its child to cur parent
         if(cur.parent.parent.parent):
-            cur.parent.parent.left = cur.parent
+            if(cur.parent.parent.parent.right and (cur.parent.parent.parent.right is not cur.parent.parent)):     
+                cur.parent.parent.parent.left = cur.parent
+            elif(cur.parent.parent.parent.left and (cur.parent.parent.parent.left is not cur.parent.parent)):
+                cur.parent.parent.parent.right = cur.parent
+                
+        # ol switcheroo
+        tempNode = cur.parent.right
         cur.parent.right = cur.parent.parent
-        cur.parent.parent = cur.parent.right.parent
-        
+        cur.parent.parent = cur.parent.parent.parent
         cur.parent.right.parent = cur.parent
-        # self.updateHeight(cur.parent)
-        # self.updateHeight(cur)
+        cur.parent.right.left = tempNode
+        if(cur.parent.right is self.root):
+            self.root = cur.parent
         
                 
     # left rotation
     def leftRotate(self, cur):
-        pass
-                
+        # swap color of parent and grandparent
+        tempCol = cur.parent.color
+        cur.parent.color = cur.parent.parent.color
+        cur.parent.parent.color = tempCol
+        
+        # if great grandparent exists sets its child to cur parent
+        if(cur.parent.parent.parent):
+           if(cur.parent.parent.parent.right and (cur.parent.parent.parent.right is not cur.parent.parent)):     
+                cur.parent.parent.parent.left = cur.parent
+           elif(cur.parent.parent.parent.left and (cur.parent.parent.parent.left is not cur.parent.parent)):
+                cur.parent.parent.parent.right = cur.parent
+        # ol switcheroo
+        tempNode = cur.parent.left
+        cur.parent.left = cur.parent.parent
+        cur.parent.parent = cur.parent.parent.parent
+        cur.parent.left.parent = cur.parent
+        cur.parent.left.right = tempNode
+        if(cur.parent.left is self.root):
+            self.root = cur.parent
+            
+    # left right rotation       
+    def leftRightRotate(self, cur):
+        cur.parent.right = None
+        cur.parent.parent.left = cur
+        cur.left = cur.parent
+        cur.parent = cur.parent.parent
+        cur.left.parent = cur
+        self.rightRotate(cur.left)
+    
+    # right left rotation
+    def rightLeftRotate(self, cur):
+        cur.parent.left = None
+        cur.parent.parent.right = cur
+        cur.right = cur.parent
+        cur.parent = cur.parent.parent
+        cur.right.parent = cur
+        self.leftRotate(cur.right)
+        
     # if nodes uncle is red and nodes parent is red and node is not a root
     # changes parent and uncle to black
     # grandparent to red
@@ -129,13 +169,15 @@ class RedBlackTree:
         if(cur):
             count+=1
             self.printHelper(cur.right, count)
-            print(f'{count}. color: {cur.color} value: {cur.word}')
+            print(f'Level {count}. color: {cur.color} value: {cur.word}')
             self.printHelper(cur.left, count)
 
 rbt = RedBlackTree()
-rbt.insert(Node(15))
-rbt.insert(Node(10))
-rbt.insert(Node(5))
-#rbt.insert(Node(5))
-#rbt.insert(Node(3))
+print(f'Insertion Order')
+for x in range(1, 10):
+    y = random.randint(1,50)
+    print(f'{x}. {y}')
+    rbt.insert(Node(y))
+
+print(f'\nTree')
 rbt.printRBT()
