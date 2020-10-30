@@ -29,33 +29,40 @@ class RedBlackTree:
         # checks that parent is red and cur is not a root
         if(cur.parent.color == 0 and self.root is not cur):
             # runs if curs left uncle is black and cur is the right child of parent
-            if((cur.parent.parent.left and cur.parent.parent.left is not cur.parent) or not cur.parent.parent.left):
-                if((not cur.parent.parent.left or (cur.parent.parent.left.color == 1)) and cur is cur.parent.right):
-                    print(f'Needs left rotation')
+            if(((cur.parent.parent.left and cur.parent.parent.left is not cur.parent) or not cur.parent.parent.left) and cur is cur.parent.right):
+                if(not cur.parent.parent.left or (cur.parent.parent.left.color == 1)):
+                    print(f'Left Rotation needed')
+                    self.leftRotate(cur)
             # runs if curs right uncle is black and cur is the left child of parent
-            elif((cur.parent.parent.right and cur.parent.parent.right is not cur.parent) or not cur.parent.parent.right):
-                if((not cur.parent.parent.right or (cur.parent.parent.right.color == 1)) and (cur is cur.parent.left)):
+            elif(((cur.parent.parent.right and cur.parent.parent.right is not cur.parent) or not cur.parent.parent.right) and (cur is cur.parent.left)):
+                if(not cur.parent.parent.right or (cur.parent.parent.right.color == 1)):
                     print(f'Right Rotation needed')
+                    self.rightRotate(cur)
             # runs if curs right uncle is black and cur is the right child of parent
             elif((cur.parent.parent.right and cur.parent.parent.right is not cur.parent) or not cur.parent.parent.right):
                 if((not cur.parent.parent.right or (cur.parent.parent.right.color == 1)) and (cur is cur.parent.right)):
-                    print(f'Left-Right Rotation needed')                
+                    print(f'Left-Right Rotation needed')
+                    self.leftRotate(cur)
+                    self.rightRotate(cur)                
             # runs if left uncle is black and cur is the left child of parent
             elif((cur.parent.parent.left and cur.parent.parent.left is not cur.parent) or not cur.parent.parent.left):
                 if((not cur.parent.parent.left or (cur.parent.parent.left.color == 1)) and cur is cur.parent.left):
                     print(f'Needs Right-Left rotation')
-                
+                    self.rightRotate(cur)
+                    self.leftRotate(cur)
     # right rotation
     # grandparent is now right child of parent
     # swap colors of parent and grand parent
     # grandparents left child is now parents right child   
-    def rightRotation(self, cur):
+    def rightRotate(self, cur):
         # swap color of parent and grandparent
         tempCol = cur.parent.color
         cur.parent.color = cur.parent.parent.color
         cur.parent.parent.color = tempCol
         
         # if great grandparent exists sets its child to cur parent
+        if(cur.parent.parent.parent):
+            cur.parent.parent.left = cur.parent
         cur.parent.right = cur.parent.parent
         cur.parent.parent = cur.parent.right.parent
         
@@ -65,7 +72,7 @@ class RedBlackTree:
         
                 
     # left rotation
-    def leftRotation(self, cur):
+    def leftRotate(self, cur):
         pass
                 
     # if nodes uncle is red and nodes parent is red and node is not a root
