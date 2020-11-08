@@ -20,28 +20,20 @@ print(f'Connecting...')
 async def on_ready():
     print(f'{bot} has connected to {bot.guilds}')
 
-# command for testing purposes. 
-# prints a bst with a users messages tagged by pos
-# call using -words 
-@bot.command(name='words', help='testing method')
-async def words(ctx):
-    await ctx.send('grabbing message history...')
-    messages = await bot.getChatLogs(ctx)
+# prints a list of the users nouns with count on discord
+@bot.command(name='nouns', help='prints users nouns')
+async def nouns(ctx):
+    userLogs = await bot.getLogs(ctx)
+    nouns = bot.getNouns(userLogs, ctx)
+    nouns.printRBT()
+    await ctx.send(nouns)
+
+# prints a list of the users pronouns with count on discord
+@bot.command(name='pronouns', help='prints users pronouns')
+async def pronouns(ctx):
+    userLogs = await bot.getLogs(ctx)
+    pronouns = bot.getPronouns(userLogs, ctx)
+    pronouns.printRBT()
+    await ctx.send(pronouns)
     
-    rbt = bot.createRBT(messages, ctx)
-    rbt.printRBT()
-    await ctx.send('done!')
-
 bot.run(TOKEN)
-
-# TODO
-# caching a users bst?
-# create a user class to save there messages
-    # maybe unnecessary if we can create bst / parse message history fast enough
-# filter by pos
-# exception handling
-# multiple channels
-# images may break ?
-# links/audio/other files may break ?
-# currently parses commands given to bot. should not do this
-# BST only adds to right and prints right

@@ -4,8 +4,9 @@ import random
 class RedBlackTree:
     def __init__(self):
         self.root = None
+        self.myStr = ''
     
-    # Inserts a node to r-b tree
+    # Inserts a node to rbt
     def insert(self, node):
         if(self.root is None):
             self.root = node
@@ -20,8 +21,7 @@ class RedBlackTree:
         self.rotate(node)
         if(node.parent and node.parent.parent):
             self.balanceTree(node.parent.parent)
-    
-    
+        
     # rotates a node based on its current uncle 
     def rotate(self, cur):
         if(not cur or not cur.parent or not cur.parent.parent):
@@ -48,6 +48,7 @@ class RedBlackTree:
                 if((not cur.parent.parent.left or (cur.parent.parent.left.color == 1)) and cur is cur.parent.left):
                     print(f'Needs Right-Left rotation')
                     self.rightLeftRotate(cur)
+    
     # right rotation
     # grandparent is now right child of parent
     # swap colors of parent and grand parent
@@ -171,13 +172,18 @@ class RedBlackTree:
             self.printHelper(cur.right, count)
             print(f'Level {count}. color: {cur.color} value: {cur.word}')
             self.printHelper(cur.left, count)
-
-rbt = RedBlackTree()
-print(f'Insertion Order')
-for x in range(1, 10):
-    y = random.randint(1,50)
-    print(f'{x}. {y}')
-    rbt.insert(Node(y))
-
-print(f'\nTree')
-rbt.printRBT()
+            
+    def __str__(self):
+        count = 0
+        self.toString(self.root)
+        temp = self.myStr
+        self.myStr = ''
+        return temp
+    
+    # converts the rbt to a readable string
+    def toString(self, cur):
+        if(cur):
+            self.toString(cur.right)
+            self.myStr += '\n' + "Word: " + str(cur.word)
+            self.myStr += " | Count: " + str(cur.count)
+            self.toString(cur.left)

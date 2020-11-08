@@ -5,30 +5,34 @@ from RedBlackTree import RedBlackTree
 from Node import Node
 class LanguageBot(commands.Bot):
 
-    # accepts a string and returns a tokenized list of words with parts of speech (pos)
+    # accepts a string and returns a tokenized list of 2-tuples with parts of speech (pos)
     def parseMessage(self, message):
         pos = nltk.word_tokenize(message)
         pos = nltk.pos_tag(pos)
         return pos
+        
+    # returns a list of messages. each message consists of one or more 2-tuples consisting of a word and pos
+    async def getLogs(self, ctx):
+        userLogs = self.tagLogs(await ctx.channel.history(limit=100).flatten(), ctx)
+        return userLogs
     
-    # accepts the context of the the bot and returns a list of strings
-    # each string is a message from the user that called it in that channel
-    # limit is the maximum number of messages to grab 
-    # note that limit=100 may not grab 100 messages if the user has < 100 messages 
-    # or other users have messages in between    
-    def getChatLogs(self, ctx):
-        userMessages = ctx.channel.history(limit=100).flatten()
-        return userMessages
-    
-    # accepts the context of the bot and a list of user messages (strings)
-    # returns a rbt with each word in the string as a node
-    def createRBT(self, userMessages, ctx):
-        rbt = RedBlackTree()
+    # accepts a list of strings and returns a list of 
+    def tagLogs(self, userMessages, ctx):
+        userLogs = []
         for message in userMessages:
             if(ctx.author == message.author):
-                parsedMessage = self.parseMessage(message.content)
-                for word in parsedMessage:
-                    rbt.insert(Node(word))
+                userLogs.append(self.parseMessage(message.content))
+        return userLogs
+    
+    # accepts the context of the bot and a list of user messages (strings) and a pos
+    # inserts a node for each word that matches the pos
+    # returns a rbt
+    def createRBT(self, userLogs, pos, ctx):
+        rbt = RedBlackTree()
+        for message in userLogs:
+            for word in message:
+                if(word[1] == pos):
+                    rbt.insert(Node(word[0]))                 
         return rbt
     
     # accepts a string and the context of the bot
@@ -42,8 +46,9 @@ class LanguageBot(commands.Bot):
     def getWordsCount():
         pass
         
-    def getNouns():
-        pass
+    def getNouns(self, userMessages, ctx):
+        nouns = self.createRBT(userMessages, "NN", ctx)
+        return nouns
     
     def getVerbs():
         pass
@@ -54,20 +59,21 @@ class LanguageBot(commands.Bot):
     def getConjunctions():
         pass
     
-    def getAdposition():
+    def getAdpositions():
         pass
         
-    def getArticle():
+    def getArticles():
         pass
         
-    def getNumeral():
+    def getNumerals():
         pass
     
     def getParticle():
         pass
         
-    def getPronoun():
-        pass
+    def getPronouns(self, userMessages, ctx):
+        pronouns = self.createRBT(userMessages, "NNP", ctx)
+        return pronouns
             
-    def getOther():
+    def getOthers():
         pass
