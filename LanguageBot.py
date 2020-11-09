@@ -1,5 +1,6 @@
 # sub class of discord bot
 import nltk
+import discord
 from discord.ext import commands
 from RedBlackTree import RedBlackTree
 from Node import Node
@@ -13,7 +14,7 @@ class LanguageBot(commands.Bot):
         
     # returns a list of messages. each message consists of one or more 2-tuples consisting of a word and pos
     async def getLogs(self, ctx):
-        userLogs = self.tagLogs(await ctx.channel.history(limit=100).flatten(), ctx)
+        userLogs = self.tagLogs(await ctx.channel.history(limit=1000).flatten(), ctx)
         return userLogs
     
     # accepts a list of strings and returns a list of 
@@ -34,6 +35,19 @@ class LanguageBot(commands.Bot):
                 if(word[1] == pos):
                     rbt.insert(Node(word[0]))                 
         return rbt
+
+    # accepts a pos and a rbt to create an embed with a users most used words
+    def createEmbed(self, pos, rbt):
+        embed = discord.Embed(title = pos, description = '', colour = discord.Colour.green())
+        list = rbt.toList()
+        count = ''
+        word = ''
+        for node in list:
+            count += str(node.count) + '\n'
+            word += str(node.word) + '\n'
+        embed.add_field(name='Word', value = word, inline = True)
+        embed.add_field(name='Count', value = count, inline = True)
+        return embed
     
     # accepts a string and the context of the bot
     # returns synonyms for the string

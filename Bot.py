@@ -20,20 +20,18 @@ print(f'Connecting...')
 async def on_ready():
     print(f'{bot} has connected to {bot.guilds}')
 
-# prints a list of the users nouns with count on discord
+# sends an embed to discord with the users nouns sorted by count
 @bot.command(name='nouns', help='prints users nouns')
 async def nouns(ctx):
     userLogs = await bot.getLogs(ctx)
     nouns = bot.getNouns(userLogs, ctx)
-    nouns.printRBT()
-    await ctx.send(nouns)
+    await ctx.send(embed=bot.createEmbed('Nouns', nouns))
 
-# prints a list of the users pronouns with count on discord
+# sends an embed to discord with the users pronouns sorted by count
 @bot.command(name='pronouns', help='prints users pronouns')
 async def pronouns(ctx):
     userLogs = await bot.getLogs(ctx)
     pronouns = bot.getPronouns(userLogs, ctx)
-    pronouns.printRBT()
-    await ctx.send(pronouns)
-    
+    await ctx.send(embed=bot.createEmbed('Pronouns', pronouns))
+
 bot.run(TOKEN)

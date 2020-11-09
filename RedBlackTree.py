@@ -49,10 +49,7 @@ class RedBlackTree:
                     print(f'Needs Right-Left rotation')
                     self.rightLeftRotate(cur)
     
-    # right rotation
-    # grandparent is now right child of parent
-    # swap colors of parent and grand parent
-    # grandparents left child is now parents right child   
+    # right rotation 
     def rightRotate(self, cur):
         # swap color of parent and grandparent
         tempCol = cur.parent.color
@@ -164,7 +161,7 @@ class RedBlackTree:
     def printRBT(self):
         count = 0
         self.printHelper(self.root, count)
-    
+        
     # helper function, allows calling of printRBT without the root / cur node as an argument      
     def printHelper(self, cur, count):
         if(cur):
@@ -173,17 +170,32 @@ class RedBlackTree:
             print(f'Level {count}. color: {cur.color} value: {cur.word}')
             self.printHelper(cur.left, count)
             
-    def __str__(self):
-        count = 0
-        self.toString(self.root)
-        temp = self.myStr
-        self.myStr = ''
-        return temp
+    # returns a list of nodes in order by count greatest to least 
+    def toList(self):
+        listByCount = []
+        listByCount.append(self.root)
+        self.listHelper(listByCount, self.root)
+        
+        def sortList(e):
+            return e.count
+            
+        listByCount.sort(reverse=True, key=sortList)
+        return listByCount
     
-    # converts the rbt to a readable string
-    def toString(self, cur):
-        if(cur):
-            self.toString(cur.right)
-            self.myStr += '\n' + "Word: " + str(cur.word)
-            self.myStr += " | Count: " + str(cur.count)
-            self.toString(cur.left)
+    # helper function for toList    
+    def listHelper(self, list, cur):
+        if(cur.left):
+            list.append(cur.left)
+            self.listHelper(list, cur.left)
+        if(cur.right):
+            list.append(cur.right)
+            self.listHelper(list, cur.right)
+        return list
+
+    # overrides the str representation of RedBlackTree        
+    def __str__(self):
+        list = self.toList()
+        myStr = 'Count\tWord\n'
+        for node in list:
+            myStr += str(node.count) + '\t' + str(node.word) + '\n'
+        return myStr
