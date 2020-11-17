@@ -39,14 +39,14 @@ class LanguageBot(commands.Bot):
                     rbt.insert(Node(word[0]))                 
         return rbt
 
-    # accepts a pos and a rbt to create an embed with a users most used words
-    #prints number of words up to numPrint. Default -1 prints all words
-    def createEmbed(self, pos, rbt, numPrint = -1):
-        if rbt.isEmpty():
-            embed = discord.Embed(title = pos, description = 'No ' + pos, colour = discord.Colour.green())
-            return embed
+    # accepts a title(part of speech) and a rbt to create an embed with a users most used words
+    # prints number of words up to numPrint. Default -1 prints all words
+    def createEmbed(self, mTitle, rbt, numPrint = -1):
+        embed = discord.Embed(title = mTitle, description = '', colour = discord.Colour.green())
         list = rbt.toList()
-        embed = discord.Embed(title = pos, description = '', colour = discord.Colour.green())
+        if rbt.isEmpty():
+            embed = discord.Embed(title = mTitle, description = 'No ' + mTitle, colour = discord.Colour.green())
+            return embed
         count = ''
         word = ''
         i = 0
