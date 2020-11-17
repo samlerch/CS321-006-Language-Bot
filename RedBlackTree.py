@@ -181,6 +181,10 @@ class RedBlackTree:
             
         listByCount.sort(reverse=True, key=sortList)
         return listByCount
+
+    #checks if the tree is empty
+    def isEmpty(self):
+        return self.root == None
     
     # helper function for toList    
     def listHelper(self, list, cur):
