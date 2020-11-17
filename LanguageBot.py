@@ -36,9 +36,9 @@ class LanguageBot(commands.Bot):
                     rbt.insert(Node(word[0]))                 
         return rbt
 
-    # accepts a pos and a rbt to create an embed with a users most used words
-    def createEmbed(self, pos, rbt):
-        embed = discord.Embed(title = pos, description = '', colour = discord.Colour.green())
+    # accepts a title(part of speech) and a rbt to create an embed with a users most used words
+    def createEmbed(self, mTitle, rbt):
+        embed = discord.Embed(title = mTitle, description = '', colour = discord.Colour.green())
         list = rbt.toList()
         count = ''
         word = ''
