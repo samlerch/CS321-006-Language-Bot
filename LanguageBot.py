@@ -24,7 +24,7 @@ class LanguageBot(commands.Bot):
     def tagLogs(self, userMessages, ctx):
         userLogs = []
         for message in userMessages:
-            if(ctx.author == message.author):
+            if(ctx.author == message.author) and (message.content[0] != '-'):
                 userLogs.append(self.parseMessage(message.content))
         return userLogs
     
