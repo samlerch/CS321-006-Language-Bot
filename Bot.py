@@ -114,4 +114,10 @@ async def mostUsed(ctx, arg = 10):
     mostUsed = bot.getMostUsedWords(userLogs, ctx)
     await ctx.send(embed=bot.createEmbed('Most Used', mostUsed, int(arg)))
 
+@bot.command(name='search', help='searches for a word and prints how many times the word has been used')
+async def search(ctx, arg):
+    userLogs = await bot.getLogs(ctx)
+    searched = bot.getWordCount(userLogs, ctx, arg)
+    await ctx.send(embed=bot.createEmbedNode('Search result', searched, arg))
+
 bot.run(TOKEN)

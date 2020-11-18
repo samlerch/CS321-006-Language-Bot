@@ -60,6 +60,18 @@ class LanguageBot(commands.Bot):
         embed.add_field(name='Count', value = count, inline = True)
         return embed
 
+    # node version of createEmbed
+    def createEmbedNode(self, mTitle, node, key):
+        embed = discord.Embed(title = mTitle, description = '', colour = discord.Colour.green())
+        if node == None:
+            embed.add_field(name='Word', value = key, inline = True)
+            embed.add_field(name='Count', value = 0, inline = True)
+            return embed
+        embed.add_field(name='Word', value = node.word, inline = True)
+        embed.add_field(name='Count', value = node.count, inline = True)
+        return embed
+
+
     def createSynonymEmbed(self, pos, lists, numPrint = -1):
         
         
@@ -103,9 +115,12 @@ class LanguageBot(commands.Bot):
     def getMostUsedWords(self, userMessages, ctx):
         mostUsedWords = self.createRBT(userMessages, ctx, 'NOUN', 'VERB', 'ADV', 'ADJ', 'CONJ', 'ADP', 'DET', 'PRT', 'PRON', 'X')
         return mostUsedWords
-        
-    def getWordCount():
-        pass
+    
+    #uses getMostUsedWords to generate full tree, search for 'key' within the tree and returns the Node(not count)    
+    def getWordCount(self, userMessages, ctx, key):
+        mostUsedWords = self.getMostUsedWords(userMessages, ctx)
+        targetNode = mostUsedWords.search(key)
+        return targetNode
         
     def getWordsCount():
         pass

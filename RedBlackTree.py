@@ -201,6 +201,23 @@ class RedBlackTree:
             self.listHelper(list, cur.right)
         return list
 
+    # helper function for search
+    def searchHelper(self, cur, key):
+        node = cur
+        if node == None or key == node.word:
+            return node
+        # returns null if search is miss, or returns the node if the search is hit
+        if key < node.word:
+            return self.searchHelper(node.left, key)
+        else:
+            return self.searchHelper(node.right, key)
+        # recurvise traversal of the node
+
+    # actual search function for 'key'
+    def search(self, key):
+        return self.searchHelper(self.root, key)
+
+
     # overrides the str representation of RedBlackTree        
     def __str__(self):
         list = self.toList()
