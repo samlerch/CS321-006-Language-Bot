@@ -1,4 +1,0 @@
-['Alhena#2615', "President Donald Trump's campaign is mounting a fresh legal bid to prevent the certification of votes in Nevada. A new lawsuit names the state's Democratic presidential electors as defendants.\n\nOne of those named is Gabrielle d'Ayr, a former chair of the Clark County Democratic Party who says she is currently homeless. Clark County has been the focus of a previous election-related case.\n\nThe lawsuit, which was jointly filed by the Trump campaign and the Nevada Republican Party, seeks to award the state's six electoral college votes to the president or annul the election result there.", '2020-11-18 18:09:39.010000']
-['Alhena#2615', '-nouns', '2020-11-18 18:09:57.898000']
-['CS321_bot#5518', '', '2020-11-18 18:09:58.715000']
-['Alhena#2615', '-saveText text.txt', '2020-11-18 18:10:07.270000']
