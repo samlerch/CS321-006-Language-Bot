@@ -120,10 +120,7 @@ class LanguageBot(commands.Bot):
     def getWordCount(self, userMessages, ctx, key):
         mostUsedWords = self.getMostUsedWords(userMessages, ctx)
         targetNode = mostUsedWords.search(key)
-        return targetNode
-        
-    def getWordsCount():
-        pass
+        return targetNode       
         
     def getNouns(self, userMessages, ctx):
         nouns = self.createRBT(userMessages, ctx, "NOUN")
