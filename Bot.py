@@ -14,6 +14,7 @@ GUILD=os.getenv('DISCORD_GUILD') # guild token is in env file
 
 # prefix used before all commands
 bot = LanguageBot(command_prefix='-')
+met = Metric()
 
 print(f'Connecting...')
   
@@ -123,10 +124,15 @@ async def search(ctx, arg):
 
 @bot.command(name='ping', help='tests response time')
 async def ping(ctx):    
-    start = Metric.responseTime()
+    start = met.responseTime()
     userLogs = await bot.getLogs(ctx)
     searched = bot.getWordCount(userLogs, ctx, 'the')
-    end = Metric.responseTime()
+    end = met.responseTime()
     await ctx.send("Response Time: %s seconds" % (end - start))
+
+@bot.command(name='saveText', help='takes in filename as an arguement to save log in to a file')
+async def saveText(ctx, arg):
+    userLogs = await met.writeLogs(ctx)
+    met.saveLogs(userLogs, arg)
 
 bot.run(TOKEN)
