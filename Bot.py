@@ -100,7 +100,7 @@ async def synonyms(ctx, arg = 10):
 	await ctx.send(embed=bot.createSynonymEmbed('Synonyms', synonyms, int(arg)))
 
 
-@bot.command(name='emulate', help='prints users other parts of speech')
+@bot.command(name='emulate', help='prints a sentence that tries and emulates the user')
 async def emulate(ctx):
 	logs = await ctx.channel.history(limit=1000).flatten()
 	rawMessages = []
@@ -115,7 +115,7 @@ async def emulate(ctx):
 # sends an embed to discord with synonyms for the users most used words
 # Prints the top 10 most used words by default
 # enter a number after the command to print up to that many word
-@bot.command(name='mostused', help='prints users other parts of speech')
+@bot.command(name='mostused', help='prints the most used words from the user')
 async def mostUsed(ctx, arg = 10):
     userLogs = await bot.getLogs(ctx)
     mostUsed = bot.getMostUsedWords(userLogs, ctx)
