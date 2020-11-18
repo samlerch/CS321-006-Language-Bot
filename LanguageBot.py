@@ -7,6 +7,10 @@ from Node import Node
 from nltk.corpus import wordnet
 from nltk.parse.generate import generate, demo_grammar
 from nltk import CFG
+from nltk.parse import CoreNLPParser
+from nltk.parse.generate import generate
+import random
+import itertools
 class LanguageBot(commands.Bot):
 
     # accepts a string and returns a tokenized list of 2-tuples with parts of speech (pos)
@@ -166,9 +170,46 @@ class LanguageBot(commands.Bot):
         others = self.createRBT(userMessages, ctx, "X")
         return others
 
+   
+    # accepts user messages and parses the messages using stanford parser
+    # from the parse trees generated creates a grammar
+    def createGrammar(self, userMessages, ctx):
+        parser = CoreNLPParser(url='http://localhost:9000')
+        parse_trees = []
+        for message in userMessages:
+            tokenized = nltk.sent_tokenize(message)
+            for sentence in tokenized:
+                parse_trees.append(list(parser.raw_parse(sentence))[0])
+        grammar_rules = set()
+        for tree in parse_trees:
+            for production in tree.productions():
+                grammar_rules.add(production)
+        start = nltk.Nonterminal('S')
+        grammar = nltk.induce_pcfg(start, grammar_rules)
+        return( ' '.join((self.generate_sentence(grammar))))
 
-    def createGrammar(self, ctx):
-        rules=list()
+    # accepts a grammar.
+    # returns a random sentence that fits the given grammar
+    # based on the generate function in nltk.parse.generate
+    # code from David Schueler https://stackoverflow.com/questions/15009656/how-to-use-nltk-to-generate-sentences-from-an-induced-grammar
+    def generate_sentence(self, grammar):
+        sentence_list = [grammar.start()]
+        all_terminals = False
+        while not all_terminals:
+            all_terminals = True
+            for position, symbol in enumerate(sentence_list):
+                if symbol in grammar._lhs_index:
+                    all_terminals = False
+                    derivations = grammar._lhs_index[symbol]
+                    derivation = random.choice(derivations) # or weighted_choice(derivations) if you have a function for that
+                    self.rewrite_at(position, derivation.rhs(), sentence_list)
+        return sentence_list
+
+    #helper for generate sentences
+    def rewrite_at(self, index, replacements, the_list):
+        del the_list[index]
+        the_list[index:index] = replacements
+        '''rules=list()
         ruleset = set(rule for tree in nltk.corpus.treebank.parsed_sents()[:10] 
            for rule in tree.productions())
         for rule in ruleset:
@@ -177,4 +218,4 @@ class LanguageBot(commands.Bot):
         grammar = nltk.induce_pcfg(S, ruleset)
         #grammar = CFG.fromstring(demo_grammar)
         for sentence in generate(grammar, n=10):
-             return(' '.join(sentence))
+             return(' '.join(sentence))'''

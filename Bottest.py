@@ -5,7 +5,6 @@ from RedBlackTree import RedBlackTree
 from discord.ext import commands
 from dotenv import load_dotenv
 from LanguageBot import LanguageBot
-from Metric import Metric
 
 
 load_dotenv("bot.env") # name of env file goes here
@@ -14,7 +13,6 @@ GUILD=os.getenv('DISCORD_GUILD') # guild token is in env file
 
 # prefix used before all commands
 bot = LanguageBot(command_prefix='-')
-met = Metric()
 
 print(f'Connecting...')
   
@@ -102,15 +100,11 @@ async def synonyms(ctx, arg = 10):
 
 @bot.command(name='emulate', help='prints users other parts of speech')
 async def emulate(ctx):
-	logs = await ctx.channel.history(limit=1000).flatten()
-	rawMessages = []
-	for message in logs:
-		if(ctx.author == message.author) and (message.content[0] != '-'):
-			(rawMessages.append(message.content))
-	
-	await ctx.send(bot.createGrammar(rawMessages, ctx))
-	#createGrammar(userMessages,ctx)
-	#await ctx.send(sentence)
+    userLogs = await bot.getLogs(ctx)
+    
+    #others = bot.getOthers(userLogs, ctx)
+    synonym = bot.createGrammar(ctx)
+    await ctx.send(synonym)
 
 # sends an embed to discord with synonyms for the users most used words
 # Prints the top 10 most used words by default
@@ -127,17 +121,9 @@ async def search(ctx, arg):
     searched = bot.getWordCount(userLogs, ctx, arg)
     await ctx.send(embed=bot.createEmbedNode('Search result', searched, arg))
 
-@bot.command(name='ping', help='tests response time')
-async def ping(ctx):    
-    start = met.responseTime()
-    userLogs = await bot.getLogs(ctx)
-    searched = bot.getWordCount(userLogs, ctx, 'the')
-    end = met.responseTime()
-    await ctx.send("Response Time: %s seconds" % (end - start))
-
-@bot.command(name='saveText', help='takes in filename as an arguement to save log in to a file')
-async def saveText(ctx, arg):
-    userLogs = await met.writeLogs(ctx)
-    met.saveLogs(userLogs, arg)
+@bot.command()
+async def print(ctx):
+    userLogs = await bot.printLog(ctx)
+    await ctx.send(userLogs)
 
 bot.run(TOKEN)
