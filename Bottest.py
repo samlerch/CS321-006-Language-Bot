@@ -5,7 +5,6 @@ from RedBlackTree import RedBlackTree
 from discord.ext import commands
 from dotenv import load_dotenv
 from LanguageBot import LanguageBot
-from Metric import Metric
 
 
 load_dotenv("bot.env") # name of env file goes here
@@ -121,12 +120,9 @@ async def search(ctx, arg):
     searched = bot.getWordCount(userLogs, ctx, arg)
     await ctx.send(embed=bot.createEmbedNode('Search result', searched, arg))
 
-@bot.command(name='ping', help='tests response time')
-async def ping(ctx):    
-    start = Metric.responseTime()
-    userLogs = await bot.getLogs(ctx)
-    searched = bot.getWordCount(userLogs, ctx, 'the')
-    end = Metric.responseTime()
-    await ctx.send("Response Time: %s seconds" % (end - start))
+@bot.command()
+async def print(ctx):
+    userLogs = await bot.printLog(ctx)
+    await ctx.send(userLogs)
 
 bot.run(TOKEN)

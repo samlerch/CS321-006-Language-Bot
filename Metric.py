@@ -1,9 +1,11 @@
+import time
+
 class Metric:
     def __init__(self):
         pass
     
     def responseTime():
-        pass
+        return time.time()
         
     def writeLogs():
         pass
