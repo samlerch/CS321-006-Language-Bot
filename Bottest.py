@@ -100,7 +100,8 @@ async def synonyms(ctx, arg = 10):
 
 @bot.command(name='emulate', help='prints users other parts of speech')
 async def emulate(ctx):
-   # userLogs = await bot.getLogs(ctx)
+    userLogs = await bot.getLogs(ctx)
+    
     #others = bot.getOthers(userLogs, ctx)
     synonym = bot.createGrammar(ctx)
     await ctx.send(synonym)

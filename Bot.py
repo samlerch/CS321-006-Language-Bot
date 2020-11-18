@@ -101,10 +101,15 @@ async def synonyms(ctx, arg = 10):
 
 @bot.command(name='emulate', help='prints users other parts of speech')
 async def emulate(ctx):
-   # userLogs = await bot.getLogs(ctx)
-    #others = bot.getOthers(userLogs, ctx)
-    synonym = bot.createGrammar(ctx)
-    await ctx.send(synonym)
+	logs = await ctx.channel.history(limit=1000).flatten()
+	rawMessages = []
+	for message in logs:
+		if(ctx.author == message.author) and (message.content[0] != '-'):
+			(rawMessages.append(message.content))
+	
+	await ctx.send(bot.createGrammar(rawMessages, ctx))
+	#createGrammar(userMessages,ctx)
+	#await ctx.send(sentence)
 
 # sends an embed to discord with synonyms for the users most used words
 # Prints the top 10 most used words by default
