@@ -1,0 +1,109 @@
+Text:
+Nory was a Catholic because her mother was a Catholic, and Nory’s mother was a Catholic because her father was a Catholic, and her father was a Catholic because his mother was a Catholic, or had been.
+
+-nouns:
+catholic: 6
+mother: 2
+nory: 2
+father: 2
+
+-adjectives:
+none
+
+-adverbs
+none
+
+-adpositions
+beacuse: 3
+
+-articles
+a: 6
+
+-numerals
+none
+
+-particles
+none
+
+-pronouns
+here: 3
+his: 1
+
+-verbs
+was: 6
+been: 1
+had: 1
+
+-conjunctions
+and: 2
+or: 2
+
+-mostused 6
+a: 6
+catholic :6
+was: 6
+because: 3
+mother: 3
+her: 3
+
+-synonyms
+No expected output
+
+-emulate:
+No expected output
+
+Text:
+apple 
+apple
+apple
+giant
+he likes to run.
+seven fast giants run
+the giant has seven apples
+
+
+-nouns:
+apple: 3
+giant: 2
+seven: 1
+apples: 1
+
+-adjectives:
+fast: 1
+seven: 2
+
+-adverbs
+none
+
+-adpositions
+the: 1
+
+-articles
+none
+
+-numerals
+seven: 2
+
+-particles
+none
+
+-verbs
+likes: 1
+run: 2
+has: 1
+
+-conjunctions
+none
+
+-mostused 1
+apple: 3
+
+-synonyms
+No expected output
+
+-emulate:
+No expected output
+
+
+
+
